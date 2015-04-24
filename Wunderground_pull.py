@@ -19,11 +19,12 @@ from Api_Pull import Api_Pull
 #.keys() vital for parsing through json
 
 class Wunderground_pull(Api_Pull):      
-    
+    listofCities = (("New_York",'NY'),("Los_Angeles","CA"),("Ardmore","PA"),("Honolulu","HI"),("Boulder","CO"),("Aurora","CO"))
+        
     #queries the API and returns JSON
-    def query_API(self):
-        state = self.state
-        city = self.city
+    def query_API(self,city,state):
+        #state = self.state
+        #city = self.city
         queryString = 'http://api.wunderground.com/api/f3cdf122d8571d47/forecast10day/q/'+state+'/'+city+'.json'
         tenDay=urllib2.urlopen(queryString)
         queryString = 'http://api.wunderground.com/api/f3cdf122d8571d47/yesterday/q/'+state+'/'+city+'.json'
@@ -32,15 +33,16 @@ class Wunderground_pull(Api_Pull):
         
         
     #renaming this to UPDATE to comply with observer pattern
-    def Update(self):
-        state = self.state
-        city = self.city
+    #adding city and state as arguments instead of attributes of API pull
+    def get_JSON(self, city, state):
+        #state = self.state
+        #city = self.city
         #f = urllib2.urlopen('http://api.wunderground.com/api/f3cdf122d8571d47/forecast10day/q/CO/Boulder.json')
 
         highList= []
         lowList = []
         name = city+state
-        tenDayYesterday = self.query_API()
+        tenDayYesterday = self.query_API(city,state)
         tenDay = tenDayYesterday[0]
         yesterday = tenDayYesterday[1]
         
@@ -149,12 +151,17 @@ class Wunderground_pull(Api_Pull):
 
 
 #queries all the cities in our list of cities
-listofCities = (("New_York",'NY'),("Los_Angeles","CA"),("Ardmore","PA"),("Honolulu","HI"),("Boulder","CO"),("Aurora","CO"))
-for x in range(0,(len(listofCities))):
-    x= Wunderground_pull('Wunderground',listofCities[x][0],listofCities[x][1])
-    x.Update()
-    time.sleep(10)
+    def update(self,listofCities):
+        #listofCities = (("New_York",'NY'),("Los_Angeles","CA"),("Ardmore","PA"),("Honolulu","HI"),("Boulder","CO"),("Aurora","CO"))
+        for x in range(0,(len(listofCities))):
+            #x= Wunderground_pull('Wunderground',listofCities[x][0],listofCities[x][1])
+            self.get_JSON(listofCities[x][0],listofCities[x][1])
+            time.sleep(10)
 
+x = Wunderground_pull("Wunderground")
+
+listofCities = (("New_York",'NY'),("Los_Angeles","CA"),("Ardmore","PA"),("Honolulu","HI"),("Boulder","CO"),("Aurora","CO"))
+x.update(listofCities)
 
 #x= Wunderground_pull('Wunderground','Honolulu','HI')
 #x.getJSONData()
