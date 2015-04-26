@@ -92,6 +92,7 @@ class Wunderground_pull(Api_Pull):
         json_string = tenDay.read()
         parsed_json = json.loads(json_string)
 
+        time.sleep(180)
         for i in range(0, 10):
             highList.append(parsed_json['forecast']['simpleforecast']['forecastday'][i]['high']['fahrenheit'])
             lowList.append(parsed_json['forecast']['simpleforecast']['forecastday'][i]['low']['fahrenheit'])
@@ -144,8 +145,8 @@ class Wunderground_pull(Api_Pull):
                     writer = csv.DictWriter(csvfile, fieldnames=fieldnames) 
                     writer.writerow({'1': lowList[0],'2': lowList[1], '3': lowList[2], '4': lowList[3],'5': lowList[4], '6': lowList[5], '7': lowList[6],'8': lowList[7],'9': lowList[8],'10': lowList[9],'date':datePulled})
             
-            else:
-                print("you tried to run the query on this city twice in one day")
+            #else:
+                #print("you tried to run the query on this city twice in one day")
 
 #test Case
 
@@ -158,10 +159,10 @@ class Wunderground_pull(Api_Pull):
             self.get_JSON(listofCities[x][0],listofCities[x][1])
             time.sleep(10)
 
-x = Wunderground_pull("Wunderground")
+#x = Wunderground_pull("Wunderground")
 
-listofCities = (("New_York",'NY'),("Los_Angeles","CA"),("Ardmore","PA"),("Honolulu","HI"),("Boulder","CO"),("Aurora","CO"))
-x.update(listofCities)
+#listofCities = (("New_York",'NY'),("Los_Angeles","CA"),("Ardmore","PA"),("Honolulu","HI"),("Boulder","CO"),("Aurora","CO"))
+#x.update(listofCities)
 
 #x= Wunderground_pull('Wunderground','Honolulu','HI')
 #x.getJSONData()

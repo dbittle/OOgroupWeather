@@ -1,9 +1,7 @@
 import time 
 from Wunderground_pull import Wunderground_pull
-from Analyze_Data import Analyze_Data
 
 class timer:
-
 	listofCities = [("New_York",'NY'),("Los_Angeles","CA"),("Ardmore","PA"),("Honolulu","HI"),("Boulder","CO"),("Aurora","CO")]
 	listofobservers = []
 	def _init_(self):
@@ -28,10 +26,8 @@ class timer:
 			
 			
 t = timer()
-#observer1 = Wunderground_pull("Wunderground")
-observer2 = Analyze_Data()
-#t.attach(observer1)
-t.attach(observer2)
+observer1 = Wunderground_pull("Wunderground")
+t.attach(observer1)
 t.monitorDate()
 		
 
