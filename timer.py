@@ -1,5 +1,6 @@
 import time 
-from Wunderground_pull import Wunderground_pull
+from Wunderground_pull import Wunderground_pullTenDay
+from Wunderground_pull import Wunderground_pullYesterday
 from Analyze_Data import Analyze_Data
 
 class timer:
@@ -28,9 +29,11 @@ class timer:
 			
 			
 t = timer()
-#observer1 = Wunderground_pull("Wunderground")
+observer1 = Wunderground_pullYesterday("Wunderground")
 observer2 = Analyze_Data()
-#t.attach(observer1)
+observer3 = Wunderground_pullTenDay("Wunderground")
+t.attach(observer1)
+t.attach(observer3)
 t.attach(observer2)
 t.monitorDate()
 		

@@ -19,17 +19,14 @@ from Api_Pull import Api_Pull
 #.keys() vital for parsing through json
 
 class Wunderground_pull(Api_Pull):      
-    listofCities = (("New_York",'NY'),("Los_Angeles","CA"),("Ardmore","PA"),("Honolulu","HI"),("Boulder","CO"),("Aurora","CO"))
         
     #queries the API and returns JSON
     def query_API(self,city,state):
         #state = self.state
         #city = self.city
-        queryString = 'http://api.wunderground.com/api/f3cdf122d8571d47/forecast10day/q/'+state+'/'+city+'.json'
-        tenDay=urllib2.urlopen(queryString)
         queryString = 'http://api.wunderground.com/api/f3cdf122d8571d47/yesterday/q/'+state+'/'+city+'.json'
         yesterday = urllib2.urlopen(queryString)
-        return(tenDay,yesterday)
+        return(yesterday)
         
         
     #renaming this to UPDATE to comply with observer pattern
@@ -42,10 +39,7 @@ class Wunderground_pull(Api_Pull):
         highList= []
         lowList = []
         name = city+state
-        tenDayYesterday = self.query_API(city,state)
-        tenDay = tenDayYesterday[0]
-        yesterday = tenDayYesterday[1]
-        
+        yesterday = self.query_API(city,state)
         json_string = yesterday.read()
         parsed_json = json.loads(json_string)
 
@@ -86,13 +80,41 @@ class Wunderground_pull(Api_Pull):
         
             else:
                 print("you tried to run the query on this city twice in one day")
+
+
+#queries all the cities in our list of cities
+    def update(self,listofCities):
+        #listofCities = (("New_York",'NY'),("Los_Angeles","CA"),("Ardmore","PA"),("Honolulu","HI"),("Boulder","CO"),("Aurora","CO"))
+        for x in range(0,(len(listofCities))):
+            #x= Wunderground_pull('Wunderground',listofCities[x][0],listofCities[x][1])
+            self.get_JSON(listofCities[x][0],listofCities[x][1])
+            time.sleep(10)
+
+
+class Wunderground_pullTenDay(Api_Pull):      
         
+    #queries the API and returns JSON
+    def query_API(self,city,state):
+        #state = self.state
+        #city = self.city
+        queryString = 'http://api.wunderground.com/api/f3cdf122d8571d47/forecast10day/q/'+state+'/'+city+'.json'
+        tenDay=urllib2.urlopen(queryString)
+        return(tenDay)
+
+    def get_JSON(self, city, state):
+        #state = self.state
+        #city = self.city
+        #f = urllib2.urlopen('http://api.wunderground.com/api/f3cdf122d8571d47/forecast10day/q/CO/Boulder.json')
+
+        highList= []
+        lowList = []
+        name = city+state
+        tenDay = self.query_API(city,state)
         #whether to append to the file or write to the file ensures there is only one set of CSVs per city
         #singleton essentially
         json_string = tenDay.read()
         parsed_json = json.loads(json_string)
 
-        time.sleep(180)
         for i in range(0, 10):
             highList.append(parsed_json['forecast']['simpleforecast']['forecastday'][i]['high']['fahrenheit'])
             lowList.append(parsed_json['forecast']['simpleforecast']['forecastday'][i]['low']['fahrenheit'])
@@ -145,10 +167,11 @@ class Wunderground_pull(Api_Pull):
                     writer = csv.DictWriter(csvfile, fieldnames=fieldnames) 
                     writer.writerow({'1': lowList[0],'2': lowList[1], '3': lowList[2], '4': lowList[3],'5': lowList[4], '6': lowList[5], '7': lowList[6],'8': lowList[7],'9': lowList[8],'10': lowList[9],'date':datePulled})
             
-            #else:
-                #print("you tried to run the query on this city twice in one day")
+            else:
+                print("you tried to run the query on this city twice in one day")
 
-#test Case
+
+
 
 
 #queries all the cities in our list of cities
