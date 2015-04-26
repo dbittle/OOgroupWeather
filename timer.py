@@ -29,11 +29,11 @@ class timer:
 			
 			
 t = timer()
-observer1 = Wunderground_pullYesterday("Wunderground")
+#observer1 = Wunderground_pullYesterday("Wunderground")
 observer2 = Analyze_Data()
-observer3 = Wunderground_pullTenDay("Wunderground")
-t.attach(observer1)
-t.attach(observer3)
+#observer3 = Wunderground_pullTenDay("Wunderground")
+#t.attach(observer1)
+#t.attach(observer3)
 t.attach(observer2)
 t.monitorDate()
 		

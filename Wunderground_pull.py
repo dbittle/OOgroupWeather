@@ -18,7 +18,7 @@ from Api_Pull import Api_Pull
 
 #.keys() vital for parsing through json
 
-class Wunderground_pull(Api_Pull):      
+class Wunderground_pullYesterday(Api_Pull):      
         
     #queries the API and returns JSON
     def query_API(self,city,state):

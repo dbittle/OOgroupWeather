@@ -28,5 +28,7 @@ fclose($handle);
 
 
 weather_readcsv('BoulderCOanalysis.csv', true);
+weather_readcsv('New_YorkNYanalysis.csv', true);
+weather_readcsv('Los_AngelesCAanalysis.csv', true);
 
 ?>
